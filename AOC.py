@@ -1,27 +1,24 @@
 class Elf:
-  def __init__(self, inventory):
+  def __init__(self, inventory, total):
     self.inventory = inventory
+    self.total= total
 
 f = open("./puzzleInput.txt","r")
 Lines = f.readlines()
 count = 0
 elfId= 1
 inventoryElf = []
-arrayElfs = [Elf]
-higherElf=0
+arrayElfs = []
 previousValue =0
 for line in Lines:
     stripLine = line.strip()
     if stripLine.strip() == "" :
-        arrayElfs.append(Elf( inventoryElf))
+
+        arrayElfs.append(Elf( inventoryElf, sum(inventoryElf)))
+
         inventoryElf = []
     else :
         inventoryElf.append(int(stripLine))
     count += 1 
-    for i in range(len(arrayElfs)-1):
-        actualValue = sum(arrayElfs[i+1].inventory)
-        if previousValue < actualValue :
-            previousValue = actualValue
-            higherElf = i+1
-print(sum(arrayElfs[higherElf].inventory))
-
+    arrayElfs.sort(key=lambda x: x.total, reverse=True)
+print(arrayElfs[0].total + arrayElfs[1].total + arrayElfs[2].total)
